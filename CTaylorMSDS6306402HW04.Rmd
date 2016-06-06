@@ -1,0 +1,470 @@
+---
+title: "Bootstrap And The Central Limit Theorem"
+author: "Celia Taylor - Homework 4 Assignment Doing Data Science MSDS 6306, section 402, Due 6/06/2016 by 8:30 p.m. Central"
+date: "June 6, 2016"
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+##########################################################################################
+##########################################################################################
+##### Week 4 Homework    
+##### The assignment is to write bootstrap code to illustrate the Central Limit Theorem in R Markdown and push the result to GitHub. Use a normal distribution with two different sample sizes and an exponential distribution with two different sample sizes. Correct code alone is  insufficient. Please also comment on the code and explain the results. For help, see the lotsa.medians function in unit 2. The deliverable is a link to a GitHub repo containing the code. 
+##########################################################################################
+##########################################################################################
+############# Please note: the code and answers for this exercise relies heavily on the instruction by Dr. Monnie McGee in SMU MSDS 6306 course in Unit 2.5 Looping and Control Structures and Unit 4.10 Simple Normal Example.
+##########################################################################################
+###
+
+###  This is a bootstrap from a simple random sample that is generated from a normal distribution and is the trial for the normal distribution with the smaller sample size of 10.
+#####  Initialize the sample size = 10, the mean = 22, and the standard deviation for the original random sample = 5.  
+```{r Initialize1, echo = FALSE}
+SampleSize <- 10
+SpecifiedSampMean <- 22
+SpecifiedStdDev <- 5
+```
+
+#####  Initialize the variable, nsims = 5000, the desired number of replications of the bootstrap operation.
+```{r Initialize2, echo = FALSE}
+nsims <- 5000
+```
+
+#####  Use rnorm and specify samplesize, mean, and the standard deviation according to previously initialized values.  x is going to be the vector that contains the original simple random sample.
+```{r GetSample1, echo = FALSE}
+x <- rnorm(SampleSize, SpecifiedSampMean, SpecifiedStdDev)
+x
+```
+#####  Take the mean of the original simple random sample in vector x and put it into the variable xbar.
+```{r GetOriSampleMean1, echo = FALSE}
+xbar <-mean(x)
+```
+
+#####   Show xbar, the mean of the original simple random sample.
+```{r ShowOriSampleMean1, echo = FALSE}
+xbar
+```
+
+#####  Initialize the bootstrap vector that is going to hold all of the means of the different replications of the bootstrap operation.
+```{r InitBootVectSampleMean1, echo = FALSE}
+bootvect <- numeric(nsims)
+```
+
+#####  Execute a loop in order to run the number of samples in the bootstrap operation and making sure that the sample items are replaced for the selection process as per the bootstrap definition.
+```{r RunSampleLoop1, echo = FALSE}
+for (i in 1:nsims){
+	temp <- sample(x, SampleSize, replace = TRUE)
+	bootvect[i] <- mean(temp)
+}
+```
+
+#####  Give a statistical summary of the bootstrap vector, bootvect, that contains all of the means of the different replications of the bootstrap operation.
+```{r Summary1, echo = FALSE}
+summary(bootvect)
+```
+
+#####   Show a histogram of the bootstrap vector, bootvect, that contains all of the means of the different replications of the bootstrap operation.
+
+####Histogram of the Trial for the Normal Distribution with the Smaller Sample Size of 10
+```{r Histogram1, echo = FALSE}
+hist(bootvect)
+```
+
+#####  Show the standard deviation of the original simple random sample
+```{r StdDevOriRanSamp1, echo = FALSE}
+StdDevOriRanSamp <- sd(x)
+StdDevOriRanSamp
+```
+
+#####  Show the standard deviation of the bootstrap vector, bootvect, that contains all of the means of the different replications of the bootstrap operation.
+```{r StdDevBootVect1, echo = FALSE}
+sd(bootvect)
+```
+
+#####  The standard deviation of the original simple random sample divided by the square root of the sample size should give a very close estimate of the original standard deviation
+```{r StdDevEstimate1, echo = FALSE}
+
+StdDevOriRanSamp/sqrt(SampleSize)
+```
+
+##### Show xbar, the mean of the original simple random sample, in red on the histogram.  Show the mean of the bootvect, which contains all of the means of the bootstrap sample replications, in blue on the histogram.  Show the original specified sample mean in cyan on the histogram.
+
+
+####Display Means Lines on Histogram of the Trial for the Normal Distribution with the Smaller Sample Size of 10
+
+```{r DisplayHistLines1, echo = FALSE}
+hist(bootvect)
+abline(v=xbar, col="red", lwd=2)
+abline(v=mean(bootvect), col='blue', lwd=2, lty=2)
+abline(v=SpecifiedSampMean, col="cyan", lwd=3, lty=3)
+```
+
+
+
+
+
+
+
+
+
+
+
+##### Estimate the bias.  In bootstrapping, the bias is the estimate that is the mean of the original simple random sample, xbar, minus the mean of the bootstrap vector, bootvect, which contains all of the means of the different replications of the bootstrap operation.
+
+```{r DetermineBias1, echo = FALSE}
+est.bias <- xbar - mean(bootvect)
+est.bias
+```
+
+
+#########################################################################
+#########################################################################
+
+
+
+
+
+
+
+
+
+###  This is a bootstrap from a simple random sample that is generated from a normal distribution and is the trial for the normal distribution with the larger sample size of 50.
+#####  Initialize the sample size = 50, the mean = 22, and the standard deviation for the original random sample = 5.  
+```{r Initializel1, echo = FALSE}
+SampleSize <- 50
+SpecifiedSampMean <- 22
+SpecifiedStdDev <- 5
+```
+
+#####  Initialize the variable, nsims = 5000, to the desired number of replications of the bootstrap operation.
+```{r Initializel2, echo = FALSE}
+nsims <- 5000
+```
+
+#####  Use rnorm and specify samplesize, mean, and the standard deviation according to previously initialized values.  x is going to be the vector that contains the original simple random sample.
+```{r GetSamplel1, echo = FALSE}
+x <- rnorm(SampleSize, SpecifiedSampMean, SpecifiedStdDev)
+x
+```
+#####  Take the mean of the original simple random sample in vector x and put it into the variable xbar.
+```{r GetOriSampleMeanl1, echo = FALSE}
+xbar <-mean(x)
+```
+
+#####   Show xbar, the mean of the original simple random sample.
+```{r ShowOriSampleMeanl1, echo = FALSE}
+xbar
+```
+
+#####  Initialize the bootstrap vector that is going to hold all of the means of the different replications of the bootstrap operation.
+```{r InitBootVectSampleMeanl1, echo = FALSE}
+bootvect <- numeric(nsims)
+```
+
+#####  Execute a loop in order to run the number of samples in the bootstrap operation and making sure that the sample items are replaced for the selection process as per the bootstrap definition.
+```{r RunSampleLoopl1, echo = FALSE}
+for (i in 1:nsims){
+	temp <- sample(x, SampleSize, replace = TRUE)
+	bootvect[i] <- mean(temp)
+}
+```
+
+#####  Give a statistical summary of the bootstrap vector, bootvect, that contains all of the means of the different replications of the bootstrap operation.
+```{r Summaryl1, echo = FALSE}
+summary(bootvect)
+```
+
+#####   Show a histogram of the bootstrap vector, bootvect, that contains all of the means of the different replications of the bootstrap operation.
+
+####Histogram of the Trial for the Normal Distribution with the Larger Sample Size of 50
+```{r Histograml1, echo = FALSE}
+hist(bootvect)
+```
+
+#####  Show the standard deviation of the original simple random sample
+```{r StdDevOriRanSampl1, echo = FALSE}
+StdDevOriRanSamp <- sd(x)
+StdDevOriRanSamp
+```
+
+#####  Show the standard deviation of the bootstrap vector, bootvect, that contains all of the means of the different replications of the bootstrap operation.
+```{r StdDevBootVectl1, echo = FALSE}
+sd(bootvect)
+```
+
+#####  The standard deviation of the original simple random sample divided by the square root of the sample size should give a very close estimate of the original standard deviation
+```{r StdDevEstimatel1, echo = FALSE}
+
+StdDevOriRanSamp/sqrt(SampleSize)
+```
+
+##### Show xbar, the mean of the original simple random sample, in red on the histogram.  Show the mean of the bootvect, which contains all of the means of the bootstrap sample replications, in blue on the histogram.  Show the original specified sample mean in cyan on the histogram.
+
+
+####Display Means Lines on Histogram of the Trial for the Normal Distribution with the Larger Sample Size of 50
+
+```{r DisplayHistLinesl1, echo = FALSE}
+hist(bootvect)
+abline(v=xbar, col="red", lwd=2)
+abline(v=mean(bootvect), col='blue', lwd=2, lty=2)
+abline(v=SpecifiedSampMean, col="cyan", lwd=3, lty=3)
+```
+
+
+
+
+
+
+
+
+
+
+
+##### Estimate the bias.  In bootstrapping, the bias is the estimate that is the mean of the original simple random sample, xbar, minus the mean of the bootstrap vector, bootvect, which contains all of the means of the different replications of the bootstrap operation.
+
+```{r DetermineBiasl1, echo = FALSE}
+est.bias <- xbar - mean(bootvect)
+est.bias
+```
+
+
+##########################################################################
+##########################################################################
+##########################################################################
+
+
+
+
+
+
+
+
+
+###  This is a bootstrap from a simple random sample that is a random generation for the exponential distribution with rate (i.e. mean 1/rate).  This is the trial for the exponential distribution with the Smaller Sample Size of 10.
+#####  Initialize the sample size = 10 and lambda = 0.2, which is the rate (mean 1/rate).  
+```{r InitializeE1, echo = FALSE}
+SampleSize <- 10
+lambda <- 0.2
+```
+
+#####  Initialize the variable, nsims = 5000, to the desired number of replications of the bootstrap operation.
+```{r InitializEe2, echo = FALSE}
+nsims <- 5000
+```
+
+#####  Use rexp and specify samplesize and lambda according to previously initialized values.  x is going to be the vector that contains the original simple random sample.
+```{r GetSampleE1, echo = FALSE}
+x <- rexp(SampleSize, lambda)
+x
+```
+#####  Take the mean of the original simple random sample in vector x and put it into the variable xbar.
+```{r GetOriSampleMeanE1, echo = FALSE}
+xbar <-mean(x)
+```
+
+#####   Show xbar, the mean of the original simple random sample.
+```{r ShowOriSampleMeanE1, echo = FALSE}
+xbar
+```
+
+#####  Initialize the bootstrap vector that is going to hold all of the means of the different replications of the bootstrap operation.
+```{r InitBootVectSampleMeanE1, echo = FALSE}
+bootvect <- numeric(nsims)
+```
+
+#####  Execute a loop in order to run the number of samples in the bootstrap operation and making sure that the sample items are replaced for the selection process as per the bootstrap definition.
+```{r RunSampleLoopE1, echo = FALSE}
+for (i in 1:nsims){
+	temp <- sample(x, SampleSize, replace = TRUE)
+	bootvect[i] <- mean(temp)
+}
+```
+
+#####  Give a statistical summary of the bootstrap vector, bootvect, that contains all of the means of the different replications of the bootstrap operation.
+```{r SummaryE1, echo = FALSE}
+summary(bootvect)
+```
+
+#####   Show a histogram of the bootstrap vector, bootvect, that contains all of the means of the different replications of the bootstrap operation.
+
+####Histogram of the Trial for the Exponential Distribution with the Smaller Sample Size of 10
+```{r HistogramE1, echo = FALSE}
+hist(bootvect)
+```
+
+#####  Show the standard deviation of the original simple random sample
+```{r StdDevOriRanSampEE1, echo = FALSE}
+StdDevOriRanSamp <- sd(x)
+StdDevOriRanSamp
+```
+
+#####  Show the standard deviation of the bootstrap vector, bootvect, that contains all of the means of the different replications of the bootstrap operation.
+```{r StdDevBootVectE1, echo = FALSE}
+sd(bootvect)
+```
+
+#####  The standard deviation of the original simple random sample divided by the square root of the sample size should give a very close estimate of the original standard deviation
+```{r StdDevEstimateE1, echo = FALSE}
+
+StdDevOriRanSamp/sqrt(SampleSize)
+```
+
+##### Show xbar, the mean of the original simple random sample, in red on the histogram.  Show the mean of the bootvect, which contains all of the means of the bootstrap sample replications, in blue on the histogram. 
+
+
+####Display Means Lines on Histogram of the Trial for the Exponential Distribution with the Smaller Sample Size of 10
+
+```{r DisplayHistLinesE1, echo = FALSE}
+hist(bootvect)
+abline(v=xbar, col="red", lwd=2)
+abline(v=mean(bootvect), col='blue', lwd=2, lty=2)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+##### Estimate the bias.  In bootstrapping, the bias is the estimate that is the mean of the original simple random sample, xbar, minus the mean of the bootstrap vector, bootvect, which contains all of the means of the different replications of the bootstrap operation.
+
+```{r DetermineBiasE1, echo = FALSE}
+est.bias <- xbar - mean(bootvect)
+est.bias
+```
+
+
+
+##########################################################################
+##########################################################################
+##########################################################################
+
+
+
+
+
+
+
+
+###  This is a bootstrap from a simple random sample that is a random generation for the exponential distribution with rate (i.e. mean 1/rate).  This is the trial for the exponential distribution with the larger sample size of 50.
+#####  Initialize the sample size = 50 and lambda = 0.2, which is the rate (mean 1/rate).  
+```{r InitializeE2, echo = FALSE}
+SampleSize <- 50
+lambda <- 0.2
+```
+
+#####  Initialize the variable, nsims = 5000, to the desired number of replications of the bootstrap operation.
+```{r InitializeEE2, echo = FALSE}
+nsims <- 5000
+```
+
+#####  Use rexp and specify samplesize and lambda according to previously initialized values.  x is going to be the vector that contains the original simple random sample.
+```{r GetSampleE2, echo = FALSE}
+x <- rexp(SampleSize, lambda)
+x
+```
+#####  Take the mean of the original simple random sample in vector x and put it into the variable xbar.
+```{r GetOriSampleMeanE2, echo = FALSE}
+xbar <-mean(x)
+```
+
+#####   Show xbar, the mean of the original simple random sample.
+```{r ShowOriSampleMeanE2, echo = FALSE}
+xbar
+```
+
+#####  Initialize the bootstrap vector that is going to hold all of the means of the different replications of the bootstrap operation.
+```{r InitBootVectSampleMeanE2, echo = FALSE}
+bootvect <- numeric(nsims)
+```
+
+#####  Execute a loop in order to run the number of samples in the bootstrap operation and making sure that the sample items are replaced for the selection process as per the bootstrap definition.
+```{r RunSampleLoopE2, echo = FALSE}
+for (i in 1:nsims){
+	temp <- sample(x, SampleSize, replace = TRUE)
+	bootvect[i] <- mean(temp)
+}
+```
+
+#####  Give a statistical summary of the bootstrap vector, bootvect, that contains all of the means of the different replications of the bootstrap operation.
+```{r SummaryE2, echo = FALSE}
+summary(bootvect)
+```
+
+#####   Show a histogram of the bootstrap vector, bootvect, that contains all of the means of the different replications of the bootstrap operation.
+
+####Histogram of the Trial for the Exponential Distribution with the Larger Sample Size of 50
+```{r HistogramE2, echo = FALSE}
+hist(bootvect)
+```
+
+#####  Show the standard deviation of the original simple random sample
+```{r StdDevOriRanSampE1, echo = FALSE}
+StdDevOriRanSamp <- sd(x)
+StdDevOriRanSamp
+```
+
+#####  Show the standard deviation of the bootstrap vector, bootvect, that contains all of the means of the different replications of the bootstrap operation.
+```{r StdDevBootVectE2, echo = FALSE}
+sd(bootvect)
+```
+
+#####  The standard deviation of the original simple random sample divided by the square root of the sample size should give a very close estimate of the original standard deviation
+```{r StdDevEstimateEE2, echo = FALSE}
+
+StdDevOriRanSamp/sqrt(SampleSize)
+```
+
+##### Show xbar, the mean of the original simple random sample, in red on the histogram.  Show the mean of the bootvect, which contains all of the means of the bootstrap sample replications, in blue on the histogram.  
+
+
+####Display Means Lines on Histogram of the Trial for the Exponential Distribution with the Larger Sample Size of 50
+
+```{r DisplayHistLinesE2, echo = FALSE}
+hist(bootvect)
+abline(v=xbar, col="red", lwd=2)
+abline(v=mean(bootvect), col='blue', lwd=2, lty=2)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+##### Estimate the bias.  In bootstrapping, the bias is the estimate that is the mean of the original simple random sample, xbar, minus the mean of the bootstrap vector, bootvect, which contains all of the means of the different replications of the bootstrap operation.
+
+```{r DetermineBiasE2, echo = FALSE}
+est.bias <- xbar - mean(bootvect)
+est.bias
+```
+
+
+### Bootstraps have two sources of variability, random sampling and bootstrap sampling.
+###This has been a demonstration of the Central Limit Theorem by using bootstrap samples.
+
+
+
+```{r Environment1, echo = FALSE}
+#####The rest is documenting my environment as needed.
+sessionInfo()
+```
+
+
+##########################################################################
+##########################################################################
+##########################################################################
+
